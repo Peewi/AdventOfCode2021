@@ -10,24 +10,24 @@ for (int i = 0; i < fishStrings.Length; i++)
 {
 	fishTimers[int.Parse(fishStrings[i])]++;
 }
-for (int i = 0; i < SIMLENGTH; i++)
+for (int day = 0; day < SIMLENGTH; day++)
 {
 	long spawners = fishTimers[0];
-	for (int j = 0; j < SPAWNINTERVAL + SPAWNDELAY; j++)
+	for (int i = 0; i < SPAWNINTERVAL + SPAWNDELAY; i++)
 	{
-		if (j + 1 < SPAWNINTERVAL + SPAWNDELAY)
+		if (i + 1 < SPAWNINTERVAL + SPAWNDELAY)
 		{
-			fishTimers[j] = fishTimers[j + 1];
-			if (j == SPAWNINTERVAL - 1)
+			fishTimers[i] = fishTimers[i + 1];
+			if (i == SPAWNINTERVAL - 1)
 			{
-				fishTimers[j] += spawners;
+				fishTimers[i] += spawners;
 			}
 		}
 		else
 		{
-			fishTimers[j] = spawners;
+			fishTimers[i] = spawners;
 		}
 	}
-	Console.WriteLine($"After {i+1} days, there are {fishTimers.Sum()} fish");
+	Console.WriteLine($"After {day+1} days, there are {fishTimers.Sum()} fish");
 }
 Console.WriteLine($"After {SIMLENGTH} days, there are {fishTimers.Sum()} fish");

@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using AdventOfCode05A;
 
-Console.WriteLine("Advent of Code day 05 part 1");
+Console.WriteLine("Advent of Code day 05 part 2");
 var input = File.ReadAllLines("Input.txt");
 Line[] MyLines = new Line[input.Length];
 for (int i = 0; i < input.Length; i++)

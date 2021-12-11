@@ -39,9 +39,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventOfCode09A", "AdventOf
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventOfCode09B", "AdventOfCode09B\AdventOfCode09B.csproj", "{7B739E4C-BABB-42E8-A670-6A6DC05CE684}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode10A", "AdventOfCode10A\AdventOfCode10A.csproj", "{E6D67416-CC38-47A5-A8BE-0A8F91C74CD8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventOfCode10A", "AdventOfCode10A\AdventOfCode10A.csproj", "{E6D67416-CC38-47A5-A8BE-0A8F91C74CD8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode10B", "AdventOfCode10B\AdventOfCode10B.csproj", "{4C7A6A92-0F1A-42CE-8E0E-B9D5B53F662E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventOfCode10B", "AdventOfCode10B\AdventOfCode10B.csproj", "{4C7A6A92-0F1A-42CE-8E0E-B9D5B53F662E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode11A", "AdventOfCode11A\AdventOfCode11A.csproj", "{44CB0BEC-8E97-4934-AEB3-77CDCEB16072}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode11B", "AdventOfCode11B\AdventOfCode11B.csproj", "{B3999A6C-31F3-4594-9DA5-FCEEC8BDCA9F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -129,6 +133,14 @@ Global
 		{4C7A6A92-0F1A-42CE-8E0E-B9D5B53F662E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C7A6A92-0F1A-42CE-8E0E-B9D5B53F662E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C7A6A92-0F1A-42CE-8E0E-B9D5B53F662E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44CB0BEC-8E97-4934-AEB3-77CDCEB16072}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44CB0BEC-8E97-4934-AEB3-77CDCEB16072}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44CB0BEC-8E97-4934-AEB3-77CDCEB16072}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44CB0BEC-8E97-4934-AEB3-77CDCEB16072}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3999A6C-31F3-4594-9DA5-FCEEC8BDCA9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3999A6C-31F3-4594-9DA5-FCEEC8BDCA9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3999A6C-31F3-4594-9DA5-FCEEC8BDCA9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3999A6C-31F3-4594-9DA5-FCEEC8BDCA9F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

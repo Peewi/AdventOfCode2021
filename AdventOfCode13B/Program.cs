@@ -60,12 +60,12 @@ for (int i = 0; i < visualLines.Length; i++)
 {
 	for (int j = 0; j < visualWidth + 1; j++)
 	{
-		visualLines[i] += ".";
+		visualLines[i] += " ";
 	}
 }
 for (int i = 0; i < dots.Count; i++)
 {
-	visualLines[dots[i].Y] = visualLines[dots[i].Y].Remove(dots[i].X, 1).Insert(dots[i].X, "#");
+	visualLines[dots[i].Y] = visualLines[dots[i].Y].Remove(dots[i].X, 1).Insert(dots[i].X, "█");
 }
 for (int i = 0; i < visualLines.Length; i++)
 {

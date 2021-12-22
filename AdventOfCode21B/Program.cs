@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 Console.WriteLine("Advent of Code day 21 part 2");
 string[] input = File.ReadAllLines("Input.txt");
-int[] diceResults = new int[] { 3, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 9 };
+int[] diceResults = new int[] { 3, 4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 8, 8, 8, 9 };
 // p1 pos, p2 pos, p1 score, p2 score
 long[,,,] gameStates = new long[10, 10, 31, 31];
 int p1Start = int.Parse(input[0][^1].ToString()) - 1;
@@ -75,12 +75,30 @@ for (int p1 = gameStates.GetUpperBound(0); p1 >= 0; p1--)
 {
 	for (int p2 = gameStates.GetUpperBound(1); p2 >= 0; p2--)
 	{
-		for (int p1S = gameStates.GetUpperBound(2); p1S >= WINNINGSCORE; p1S--)
+		for (int p1S = gameStates.GetUpperBound(2); p1S >= 0; p1S--)
 		{
 			for (int p2S = gameStates.GetUpperBound(3); p2S >= 0; p2S--)
 			{
-				p1Wins += gameStates[p1, p2, p1S, p2S];
-				p2Wins += gameStates[p1, p2, p2S, p1S];
+				long wins = gameStates[p1, p2, p1S, p2S];
+				if (wins != 0)
+				{
+					if (p1S >= WINNINGSCORE)
+					{
+						p1Wins += wins;
+					}
+					if (p2S >= WINNINGSCORE)
+					{
+						p2Wins += wins;
+					}
+					if (p1S >= WINNINGSCORE && p2S >= WINNINGSCORE)
+					{
+						throw new Exception("Both won?");
+					}
+					if (p1S < WINNINGSCORE && p2S < WINNINGSCORE)
+					{
+						throw new Exception("No one won?");
+					}
+				}
 			}
 		}
 	}

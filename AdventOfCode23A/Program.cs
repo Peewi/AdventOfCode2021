@@ -2,7 +2,8 @@
 Console.WriteLine("Advent of Code day 23 part 1");
 string[] input = File.ReadAllLines("Input.txt");
 string[] goal = File.ReadAllLines("Goal.txt");
-Dictionary<Amphipod[,], int> StateEnergy = new Dictionary<Amphipod[,], int>();
+Dictionary<string, int> StateEnergy = new Dictionary<string, int>();
+Dictionary<string, Amphipod[,]> StringToState = new Dictionary<string, Amphipod[,]>();
 Amphipod[,] startingState = new Amphipod[input[0].Length,input.Length];
 Amphipod[,] goalState = new Amphipod[input[0].Length,input.Length];
 for (int i = 0; i < input.Length; i++)
@@ -63,7 +64,9 @@ for (int i = 0; i < goal.Length; i++)
 		}
 	}
 }
-StateEnergy.Add(startingState, 0);
+StateEnergy.Add(stringify(startingState), 0);
+StringToState.Add(stringify(startingState), startingState);
+string goalString = stringify(goalState);
 Dictionary<Amphipod, int> EnergyUse = new Dictionary<Amphipod, int>();
 EnergyUse.Add(Amphipod.A, 1);
 EnergyUse.Add(Amphipod.B, 10);
@@ -77,7 +80,7 @@ RoomX.Add(Amphipod.D, 9);
 const int HALLWAYY = 1;
 const int ROOMTOPY = 2;
 const int ROOMBOTY = 3;
-HashSet<Amphipod[,]> CheckedStates = new HashSet<Amphipod[,]>();
+HashSet<string> CheckedStates = new HashSet<string>();
 while (CheckedStates.Count < StateEnergy.Count)
 {
 	Console.WriteLine($"Checking state {CheckedStates.Count}.");
@@ -86,17 +89,18 @@ while (CheckedStates.Count < StateEnergy.Count)
 	{
 		if (!CheckedStates.Contains(item.Key))
 		{
-			for (int x = 0; x < item.Key.GetUpperBound(0) + 1; x++)
+			var currentState = StringToState[item.Key];
+			for (int x = 0; x < currentState.GetUpperBound(0) + 1; x++)
 			{
-				for (int y = 0; y < item.Key.GetUpperBound(1) + 1; y++)
+				for (int y = 0; y < currentState.GetUpperBound(1) + 1; y++)
 				{
-					if (item.Key[x, y] != Amphipod.Empty && item.Key[x, y] != Amphipod.Wall)
+					if (currentState[x, y] != Amphipod.Empty && currentState[x, y] != Amphipod.Wall)
 					{
 						if (y == HALLWAYY)
 						{// Is in hallway
-							int targetX = RoomX[item.Key[x, y]];
-							var roomBot = item.Key[targetX, ROOMBOTY];
-							var roomTop = item.Key[targetX, ROOMTOPY];
+							int targetX = RoomX[currentState[x, y]];
+							var roomBot = currentState[targetX, ROOMBOTY];
+							var roomTop = currentState[targetX, ROOMTOPY];
 							bool targetClear = false;
 							int targetY = 0;
 							if (roomTop == Amphipod.Empty && roomBot == Amphipod.Empty)
@@ -104,7 +108,7 @@ while (CheckedStates.Count < StateEnergy.Count)
 								targetClear = true;
 								targetY = ROOMBOTY;
 							}
-							else if (roomTop == Amphipod.Empty && roomBot == item.Key[x, y])
+							else if (roomTop == Amphipod.Empty && roomBot == currentState[x, y])
 							{ // Front part of target room is empty and back part matches
 								targetClear = true;
 								targetY = ROOMTOPY;
@@ -112,69 +116,69 @@ while (CheckedStates.Count < StateEnergy.Count)
 							if (targetClear)
 							{
 								bool pathClear = true;
-								int moveDir = Math.Sign(RoomX[item.Key[x, y]] - x);
+								int moveDir = Math.Sign(RoomX[currentState[x, y]] - x);
 								//int moveX = x;
 								for (int moveX = x + moveDir; moveX != targetX; moveX+=moveDir)
 								{
-									pathClear = pathClear && item.Key[moveX, y] == Amphipod.Empty;
+									pathClear = pathClear && currentState[moveX, y] == Amphipod.Empty;
 								}
-								if (pathClear && item.Key.Clone() is Amphipod[,] stateClone)
+								if (pathClear && currentState.Clone() is Amphipod[,] stateClone)
 								{
 									stateClone[x, y] = Amphipod.Empty;
-									stateClone[targetX, targetY] = item.Key[x, y];
+									stateClone[targetX, targetY] = currentState[x, y];
 									int cost = item.Value;
 									int dist = Math.Abs(x - targetX);
 									dist += Math.Abs(y - targetY);
-									cost += dist * EnergyUse[item.Key[x, y]];
+									cost += dist * EnergyUse[currentState[x, y]];
 									NewStateEnergy[stateClone] = cost;
 								}
 							}
 						}
 						bool hallwayMove = false;
-						bool belongs = x == RoomX[item.Key[x, y]];
+						bool belongs = x == RoomX[currentState[x, y]];
 						if (y == ROOMTOPY)
 						{ // You can move out from the front if you or the one behind you don't belong 
-							hallwayMove = !belongs || RoomX[item.Key[x, ROOMBOTY]] != x;
+							hallwayMove = !belongs || RoomX[currentState[x, ROOMBOTY]] != x;
 						}
 						else if (y == ROOMBOTY)
 						{ // You can move out from the back if you don't belong and the space in front is empty
-							hallwayMove = !belongs && item.Key[x, ROOMTOPY] == Amphipod.Empty;
+							hallwayMove = !belongs && currentState[x, ROOMTOPY] == Amphipod.Empty;
 						}
 						if (hallwayMove)
 						{
 							// Moving right
-							for (int moveX = x+1; moveX < item.Key.GetUpperBound(0)+1; moveX++)
+							for (int moveX = x+1; moveX < currentState.GetUpperBound(0)+1; moveX++)
 							{
-								if (item.Key[moveX, HALLWAYY] != Amphipod.Empty)
+								if (currentState[moveX, HALLWAYY] != Amphipod.Empty)
 								{
 									break;
 								}
-								if (!RoomX.ContainsValue(moveX) && item.Key.Clone() is Amphipod[,] stateClone)
+								if (!RoomX.ContainsValue(moveX) && currentState.Clone() is Amphipod[,] stateClone)
 								{ // don't stop outside a room.
 									stateClone[x, y] = Amphipod.Empty;
-									stateClone[moveX, HALLWAYY] = item.Key[x, y];
+									stateClone[moveX, HALLWAYY] = currentState[x, y];
 									int cost = item.Value;
 									int dist = Math.Abs(x - moveX);
 									dist += Math.Abs(y - HALLWAYY);
-									cost += dist * EnergyUse[item.Key[x, y]];
+									cost += dist * EnergyUse[currentState[x, y]];
 									NewStateEnergy[stateClone] = cost;
 								}
 							}
 							// Moving left
 							for (int moveX = x-1; moveX > 0; moveX--)
 							{
-								if (item.Key[moveX, HALLWAYY] != Amphipod.Empty)
+								if (currentState[moveX, HALLWAYY] != Amphipod.Empty)
 								{
 									break;
 								}
-								if (!RoomX.ContainsValue(moveX) && item.Key.Clone() is Amphipod[,] stateClone)
+								if (!RoomX.ContainsValue(moveX) && currentState.Clone() is Amphipod[,] stateClone)
 								{ // don't stop outside a room.
 									stateClone[x, y] = Amphipod.Empty;
-									stateClone[moveX, HALLWAYY] = item.Key[x, y];
+									stateClone[moveX, HALLWAYY] = currentState[x, y];
 									int cost = item.Value;
 									int dist = Math.Abs(x - moveX);
 									dist += Math.Abs(y - HALLWAYY);
-									cost += dist * EnergyUse[item.Key[x, y]];
+									cost += dist * EnergyUse[currentState[x, y]];
 									NewStateEnergy[stateClone] = cost;
 								}
 							}
@@ -188,23 +192,25 @@ while (CheckedStates.Count < StateEnergy.Count)
 	}
 	foreach (var item in NewStateEnergy)
 	{
-		if (StateEnergy.ContainsKey(item.Key))
+		var stringed = stringify(item.Key);
+		if (StateEnergy.ContainsKey(stringed))
 		{
-			StateEnergy[item.Key] = Math.Min(StateEnergy[item.Key], NewStateEnergy[item.Key]);
+			StateEnergy[stringed] = Math.Min(StateEnergy[stringed], NewStateEnergy[item.Key]);
 		}
 		else
 		{
-			StateEnergy[item.Key] = item.Value;
+			StateEnergy[stringed] = item.Value;
+			StringToState[stringed] = item.Key;
 		}
 	}
-	if (StateEnergy.ContainsKey(goalState))
+	if (StateEnergy.ContainsKey(goalString))
 	{
-		Console.WriteLine($"Goal state minimum energy: {StateEnergy[goalState]}");
+		Console.WriteLine($"Goal state minimum energy: {StateEnergy[goalString]}");
 	}
 }
-if (StateEnergy.ContainsKey(goalState))
+if (StateEnergy.ContainsKey(goalString))
 {
-	Console.WriteLine($"Goal state minimum energy: {StateEnergy[goalState]}");
+	Console.WriteLine($"Goal state minimum energy: {StateEnergy[goalString]}");
 }
 else
 {
